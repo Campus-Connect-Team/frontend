@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import NavBar from '../components/NavBar';
 import Search from '../components/board/Search';
+import BoardList from '../components/board/BoardList';
 
 const Title = styled.div`
   display: flex;
@@ -16,6 +17,7 @@ function BoardPage() {
       <NavBar />
       <Title>거래 게시판</Title>
       <Search />
+      <BoardList />
     </>
   );
 }
