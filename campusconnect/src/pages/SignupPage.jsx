@@ -1,5 +1,13 @@
+import NavBar from '../components/NavBar';
+import Signup from '../components/signup/Signup';
+
 function SignupPage() {
-  return <div>회원가입 페이지입니다.</div>;
+  return (
+    <>
+      <NavBar />
+      <Signup />
+    </>
+  );
 }
 
 export default SignupPage;
