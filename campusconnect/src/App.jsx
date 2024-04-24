@@ -8,6 +8,8 @@ import BoardPage from './pages/BoardPage';
 import EditMyPage from './pages/EditMyPage';
 import FindPasswordPage from './pages/FindPasswordPage';
 import MyPage from './pages/MyPage';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 function App() {
   return (

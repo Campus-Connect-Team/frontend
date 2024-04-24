@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import FindPasswordInfo from './FindPasswordInfo.jsx';
 
 const FindPasswordForm = () => {
-  const [tempPassword, setTempPassword] = useState('');  
+  const [tempPassword, setTempPassword] = useState('');
   const [isValidTempPassword, setIsValidTempPassword] = useState(false);
   const [showFindPasswordInfo, setShowFindPasswordInfo] = useState(false);
 
   const handleTempPasswordChange = (event) => {
     const inputValue = event.target.value;
     setTempPassword(inputValue);
-    const isValid = inputValue === '1111aaaa!';  
+    const isValid = inputValue === '1111aaaa!';
     setIsValidTempPassword(isValid);
   };
 
@@ -21,19 +21,19 @@ const FindPasswordForm = () => {
   const handleLoginClick = () => {
     const containsSpecialChar = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/;
 
-    if (!containsSpecialChar.test(tempPassword) || tempPassword.length < 8 || tempPassword.length > 20) {
-      alert('임시 비밀번호는 특수문자 포함 8~20자입니다.');
-    } else {
-      alert('로그인 완료.');
-    }
-  }; // 
+    // if (!containsSpecialChar.test(tempPassword) || tempPassword.length < 8 || tempPassword.length > 20) {
+    //   alert('임시 비밀번호는 특수문자 포함 8~20자입니다.');
+    // } else {
+    //   alert('로그인 완료.');
+    // }
+  }; //
 
   return (
     <StyledWrapper>
       <form>
         <div className="input-wrapper">
           <div className="label">학번</div>
-          <input placeholder="학번" maxLength={20}/>
+          <input placeholder="학번" maxLength={20} />
         </div>
         <div className="input-wrapper">
           <div className="label">학교 이메일</div>
@@ -45,17 +45,17 @@ const FindPasswordForm = () => {
         </div>
         <div className="input-wrapper last">
           <div className="label">임시 비밀번호 입력</div>
-          <input placeholder="임시 비밀번호" value={tempPassword} onChange={handleTempPasswordChange}/>
+          <input placeholder="임시 비밀번호" value={tempPassword} onChange={handleTempPasswordChange} />
         </div>
         {tempPassword && (isValidTempPassword ? (
           <div className="collect">확인되었습니다.</div>
         ) : (
           <div className="waring">임시 비밀번호를 재확인해 주세요.</div>
-        ))} 
+        ))}
       </form>
       <div className="login-btn" onClick={handleLoginClick}>
         <span>로그인</span>
-      </div> 
+      </div>
       {showFindPasswordInfo && <FindPasswordInfo />}
     </StyledWrapper>
   );
@@ -126,15 +126,16 @@ const StyledWrapper = styled.div`
   }
 
   .login-btn {
+    margin-top: 12px;
     display: flex;
     margin-bottom: 20px;
     align-items: center;
-    padding-left: 180px;
     background-color: #5b7eef;
     padding: 10px 35px;
     color: #fff;
     border-radius: 10px;
     font-size: 12px;
     cursor: pointer;
+    margin-right: 90px;
   }
 `;

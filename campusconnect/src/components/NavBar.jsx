@@ -3,7 +3,7 @@ import Logo from '../assets/Logo.png';
 
 const NavigationBar = styled.div`
   width: 100%;
-  height: 4.2rem;
+  height: 6.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,6 +61,44 @@ const Authentication = styled.a`
   }
 `;
 
+const StyledWrapper = styled.div`
+  margin-right: 30px;
+
+  .nav-seller-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .name {
+      margin-bottom: 3px;
+      text-align: end;
+
+    }
+
+    .info {
+      font-size: 14px;
+      color: #007aff;
+    }
+
+    > img {
+      width: 45px;
+      height: 45px;
+      margin-right: 10px;
+    }
+  }
+  
+  .nav-logout{
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    
+    > img{
+      width: 20px;
+      height: 20px;
+    }
+  }
+`;
+
 function NavBar() {
   return (
     <NavigationBar>
@@ -76,13 +114,26 @@ function NavBar() {
         <Category>전체 공지사항</Category>
         <Category>거래 게시판</Category>
       </div>
-      <div>
-        <Authentication>로그인</Authentication>
-        <Authentication>회원가입</Authentication>
-      </div>
+      {/*<div>*/}
+      {/*  <Authentication>로그인</Authentication>*/}
+      {/*  <Authentication>회원가입</Authentication>*/}
+      {/*</div>*/}
+      <StyledWrapper>
+        <div className="nav-seller-info">
+          <img src="/default.png" />
+          <div>
+            <div className="name">정보통신공학과 <br /> 김00</div>
+          </div>
+        </div>
+        <div className="nav-logout">
+          <img src="/src/assets/Logo.png" />
+          <div>
+            <div>로그아웃</div>
+          </div>
+        </div>
+      </StyledWrapper>
     </NavigationBar>
   );
 }
 
 export default NavBar;
-
