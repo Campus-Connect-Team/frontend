@@ -19,6 +19,7 @@ function FindPasswordPage() {
 
 export default FindPasswordPage;
 
+
 const StyledWrapper = styled.div`
   margin-top: 100px;
   height: 100%;
