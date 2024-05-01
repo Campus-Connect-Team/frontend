@@ -8,6 +8,8 @@ import BoardPage from './pages/BoardPage';
 import EditMyPage from './pages/EditMyPage';
 import FindPasswordPage from './pages/FindPasswordPage';
 import MyPage from './pages/MyPage';
+import EditPassword from './pages/EditPassword';
+import UserWithdrawal from './pages/UserWithdrawal';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -22,8 +24,10 @@ function App() {
         <Route path="boarddetail" element={<BoardDetailPage />} />
         <Route path="/board" element={<BoardPage />} />
         <Route path="/editmypage" element={<EditMyPage />} />
-        <Route path="findpassword" element={<FindPasswordPage />} />
+        <Route path="/findpassword" element={<FindPasswordPage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/editpassword" element={<EditPassword />} />
+        <Route path="/userwithdrawal" element={<UserWithdrawal />} />
       </Routes>
     </BrowserRouter>
   );
