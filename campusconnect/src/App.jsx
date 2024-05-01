@@ -9,7 +9,9 @@ import EditMyPage from './pages/EditMyPage';
 import FindPasswordPage from './pages/FindPasswordPage';
 import MyPage from './pages/MyPage';
 import EditPassword from './pages/EditPassword';
+import EditPasswordComplete from './pages/EditPasswordComplete';
 import UserWithdrawal from './pages/UserWithdrawal';
+import UserWithdrawalComplete from './pages/UserWithdrawalComplete';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -27,7 +29,9 @@ function App() {
         <Route path="/findpassword" element={<FindPasswordPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/editpassword" element={<EditPassword />} />
+        <Route path="/editpasswordcomplete" element={<EditPasswordComplete />} />
         <Route path="/userwithdrawal" element={<UserWithdrawal />} />
+        <Route path="/userwithdrawalcomplete" element={<UserWithdrawalComplete />} />
       </Routes>
     </BrowserRouter>
   );
