@@ -5,11 +5,11 @@ import EvalScore from '../components/mypage/EvalScore';
 import InterestItem from '../components/mypage/InterestItem';
 import ChatList from '../components/mypage/ChatList';
 import PostList from '../components/mypage/PostList';
-import DeleteMembership from '../components/mypage/DeleteMembership';
+import DeleteAccountBtn from '../components/mypage/DeleteAccountBtn';
 
 const MyPageContainer = styled.div`
   width: 50%;
-  margin: 0 auto;
+  margin: 0 auto 5% auto;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -27,7 +27,7 @@ function MyPage() {
         <InterestItem />
         <ChatList />
         <PostList />
-        <DeleteMembership />
+        <DeleteAccountBtn />
       </MyPageContainer>
     </>
   );

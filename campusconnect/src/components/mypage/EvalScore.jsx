@@ -39,15 +39,23 @@ const ScoreNum = styled.span`
 `;
 
 const List = styled.div`
-  width: 90%;
+  width: 95%;
+  height: 65%;
   margin: 0 auto;
   padding: 1rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #d9d9d9;
+  flex-direction: column;
+  gap: 20px;
   overflow: auto;
   font-size: 1rem;
+`;
+
+const ListItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #d9d9d9;
 `;
 
 const ListState = styled.span`
@@ -121,20 +129,15 @@ function EvalScore() {
         </ScoreContainer>
 
         <List>
-          {/* {ListMock.List.map((item) => (
-            <div>
+          {ListMock.List.map((item) => (
+            <ListItem>
               <ListState>[거래 완료]</ListState>
               <ListImg src={item.img} alt="프로필" />
-              <ListTitle>{item.title}</ListTitle>
+              <ListTitle>{item.Title}</ListTitle>
               <span>{item.Info}</span>
               <ListBtn type="button">평가하기</ListBtn>
-            </div>
-          ))} */}
-          <ListState>[거래 완료]</ListState>
-          <ListImg src={UserIcon} alt="프로필" />
-          <ListTitle>도서: The Givers 판매합니다</ListTitle>
-          <span>영어영문학과 이OO</span>
-          <ListBtn type="button">평가하기</ListBtn>
+            </ListItem>
+          ))}
         </List>
 
         <InfoContainer>거래 완료된 1건이 있어요 거래가 어땠는지 평가해주세요!</InfoContainer>
