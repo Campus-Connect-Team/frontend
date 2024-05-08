@@ -16,6 +16,7 @@ const ImgContainer = styled.div`
 const ProfileImg = styled.img`
   width: 4rem;
   height: 4rem;
+  border-radius: 30px;
   margin-right: 1rem;
 `;
 

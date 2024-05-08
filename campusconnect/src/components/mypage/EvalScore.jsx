@@ -66,6 +66,7 @@ const ListState = styled.span`
 const ListImg = styled.img`
   width: 2rem;
   height: 2rem;
+  border-radius: 30px;
 `;
 
 const ListTitle = styled.span`
@@ -103,7 +104,7 @@ const ListMock = {
   ],
 };
 
-function EvalScore() {
+function EvalScore({ openSellerRating }) {
   return (
     <Wrapper>
       <Title>판매 & 구매 점수</Title>
@@ -135,7 +136,9 @@ function EvalScore() {
               <ListImg src={item.img} alt="프로필" />
               <ListTitle>{item.Title}</ListTitle>
               <span>{item.Info}</span>
-              <ListBtn type="button">평가하기</ListBtn>
+              <ListBtn onClick={openSellerRating} type="button">
+                평가하기
+              </ListBtn>
             </ListItem>
           ))}
         </List>

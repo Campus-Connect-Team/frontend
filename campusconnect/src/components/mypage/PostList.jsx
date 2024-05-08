@@ -43,6 +43,7 @@ const ListItem = styled.div`
 
 const PosibleText = styled.div`
   color: #4181ff;
+  font-weight: 600;
 `;
 
 const BtnWrapper = styled.div`
@@ -77,7 +78,7 @@ const DeleteBtn = styled.button`
   }
 `;
 
-function PostList() {
+function PostList({ openBoardDelete }) {
   return (
     <Wrapper>
       <Title>작성한 게시글</Title>
@@ -89,7 +90,9 @@ function PostList() {
             <div>에어팟 프로 2 판매합니다</div>
             <BtnWrapper>
               <EditBtn type="button">수정하기</EditBtn>
-              <DeleteBtn type="button">삭제하기</DeleteBtn>
+              <DeleteBtn onClick={openBoardDelete} type="button">
+                삭제하기
+              </DeleteBtn>
             </BtnWrapper>
           </ListItem>
         </List>

@@ -34,9 +34,15 @@ const List = styled.div`
   font-size: 1rem;
 `;
 
+const ListState = styled.div`
+  color: #4181ff;
+  font-weight: 600;
+`;
+
 const UserImg = styled.img`
   width: 2rem;
   height: 2rem;
+  border-radius: 30px;
 `;
 
 const ListItem = styled.div`
@@ -75,7 +81,7 @@ function ChatList() {
       <BoxContainer>
         <List>
           <ListItem>
-            <div>구매자</div>
+            <ListState>[구매자]</ListState>
             <UserImg src={UserIcon} alt="프로필 사진" />
             <div>
               <ListTitle>안녕하세요 구매 희망하는데 혹시 팔렸나요?</ListTitle>

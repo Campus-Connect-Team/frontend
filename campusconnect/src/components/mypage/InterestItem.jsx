@@ -37,6 +37,7 @@ const List = styled.div`
 const UserImg = styled.img`
   width: 2rem;
   height: 2rem;
+  border-radius: 30px;
 `;
 
 const ListItem = styled.div`
@@ -51,23 +52,9 @@ const ListTitle = styled.span`
   font-weight: 800;
 `;
 
-const BtnWrapper = styled.div`
-  width: 16rem;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const TransBtn = styled.button`
-  border: none;
-  width: 7rem;
-  height: 1.8rem;
-  background-color: #4181ff;
-  border-radius: 5px;
-  color: #fff;
-
-  &: hover {
-    cursor: pointer;
-  }
+const TransBtn = styled.div`
+  color: #4181ff;
+  font-weight: 600;
 `;
 
 const DeleteBtn = styled.button`
@@ -83,7 +70,7 @@ const DeleteBtn = styled.button`
   }
 `;
 
-function InterestItem() {
+function InterestItem({ openInterestListOff }) {
   return (
     <Wrapper>
       <Title>관심 상품</Title>
@@ -91,13 +78,14 @@ function InterestItem() {
       <BoxContainer>
         <List>
           <ListItem>
+            <TransBtn>[거래 가능]</TransBtn>
             <UserImg src={UserIcon} alt="프로필 사진" />
             <ListTitle>컴퓨터구조 전공교재</ListTitle>
             <div>정보통신공학과 / 이OO</div>
-            <BtnWrapper>
-              <TransBtn type="button">거래가능</TransBtn>
-              <DeleteBtn type="button">X</DeleteBtn>
-            </BtnWrapper>
+
+            <DeleteBtn onClick={openInterestListOff} type="button">
+              X
+            </DeleteBtn>
           </ListItem>
         </List>
       </BoxContainer>
