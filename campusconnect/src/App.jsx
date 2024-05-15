@@ -6,6 +6,7 @@ import AssignBoardPage from './pages/AssignBoardPage';
 import BoardDetailPage from './pages/BoardDetailPage';
 import BoardPage from './pages/BoardPage';
 import EditMyPage from './pages/EditMyPage';
+import EditMyPageComplete from './pages/EditMyPageComplete';
 import FindPasswordPage from './pages/FindPasswordPage';
 import MyPage from './pages/MyPage';
 import EditPassword from './pages/EditPassword';
@@ -26,6 +27,7 @@ function App() {
         <Route path="boarddetail" element={<BoardDetailPage />} />
         <Route path="/board" element={<BoardPage />} />
         <Route path="/editmypage" element={<EditMyPage />} />
+        <Route path="/editmypagecomplete" element={<EditMyPageComplete />} />
         <Route path="/findpassword" element={<FindPasswordPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/editpassword" element={<EditPassword />} />
