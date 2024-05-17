@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import UserIcon from '../../assets/UserIcon.png';
 
@@ -211,34 +212,66 @@ const SignupBtn = styled.button`
 function Signup() {
   const [selectedFaculty, setSelectedFaculty] = useState();
   const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [imgFile, setImgFile] = useState('');
+  const [imgFile, setImgFile] = useState(null);
   const imgRef = useRef();
+  const [signup, setSignup] = useState({
+    image: null,
+    name: '',
+    studentNumber: '',
+    email: '',
+    authenticationNumber: '',
+    password: '',
+    college: '',
+    department: '',
+  });
+
+  // 학과(학부) 변경 핸들러
+  const changeDepartmentHandler = (e) => {
+    const selectedDepartmentValue = e.target.value;
+    setSelectedDepartment(selectedDepartmentValue);
+    setSignup({
+      ...signup,
+      department: selectedDepartmentValue,
+    });
+  };
 
   // 단과대학이 변경될 때 호출되는 함수
   const ChangeFacultyHandler = (e) => {
-    setSelectedFaculty(e.target.value);
+    const selectedCollegeValue = e.target.value;
+    setSelectedFaculty(selectedCollegeValue);
     setSelectedDepartment(''); // 단과대학이 변경될 때마다 학과(학부) 초기화
+    setSignup({
+      ...signup,
+      college: selectedCollegeValue,
+      department: '',
+    });
   };
 
   // 선택한 단과대학에 따라 학과(학부) 옵션을 반환하는 함수
   const getDepartmentOptions = () => {
     switch (selectedFaculty) {
       case '신학대학':
-        return ['신학과', '신학부', '기독교교육상담학과', '문화선교학과'];
+        return ['학과(학부)', '신학과', '신학부', '기독교교육상담학과', '문화선교학과'];
       case '인문대학':
-        return ['국어국문학과', '영어영문학과', '중어중문학과'];
+        return ['학과(학부)', '국어국문학과', '영어영문학과', '중어중문학과'];
       case '사회과학대학':
-        return ['국제개발협력학과', '사회복지학과', '행정학과'];
+        return ['학과(학부)', '국제개발협력학과', '사회복지학과', '행정학과'];
       case '글로벌경영기술대학':
-        return ['관광개발학과', '경엉학과', '글로벌물류학부', '산업경영공학과'];
+        return ['학과(학부)', '관광개발학과', '경엉학과', '글로벌물류학부', '산업경영공학과'];
       case '사범대학':
-        return ['유아교육과', '체육교육과', '교직부'];
+        return ['학과(학부)', '유아교육과', '체육교육과', '교직부'];
       case 'IT공과대학':
-        return ['컴퓨터공학과', '정보통신공학과', '미디어소프트웨어학과', '도시디자인정보공학과'];
+        return [
+          '학과(학부)',
+          '컴퓨터공학과',
+          '정보통신공학과',
+          '미디어소프트웨어학과',
+          '도시디자인정보공학과',
+        ];
       case '예술대학':
-        return ['음악학부', '연극영화학부', '뷰티디자인학과', '실용음악과'];
+        return ['학과(학부)', '음악학부', '연극영화학부', '뷰티디자인학과', '실용음악과'];
       case '융합대학':
-        return ['융합학부'];
+        return ['학과(학부)', '융합학부'];
       default:
         return ['학과(학부)'];
     }
@@ -251,7 +284,118 @@ function Signup() {
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setImgFile(reader.result);
+      setSignup({
+        ...signup,
+        image: imgRef.current.files[0],
+      });
     };
+  };
+
+  // 입력 값 저장하기
+  const inputHandler = (event) => {
+    console.log(event.target.value);
+    const { name, value } = event.target;
+    setSignup({
+      ...signup,
+      [name]: value,
+    });
+  };
+
+  // 학번 중복 체크
+  const stuNumCheckHandler = (e) => {
+    e.preventDefault();
+    console.log(signup.studentNumber);
+    axios
+      .get('http://15.165.91.27:8080/users/sign-up/studentNumber-duplicate-validation', {
+        params: {
+          studentNumber: signup.studentNumber,
+        },
+      })
+      .then((res) => alert(res.data.description))
+      .catch((err) => console.log(err));
+  };
+
+  // 이메일 중복 체크
+  const emailCheckHandler = (e) => {
+    e.preventDefault();
+    axios
+      .get('http://15.165.91.27:8080/users/sign-up/email-duplicate-validation', {
+        params: {
+          email: signup.email,
+        },
+      })
+      .then((res) => alert(res.data.description))
+      .catch((err) => console.log(err));
+  };
+
+  // 이메일 인증 발송
+  const sendEmailAuthHandler = (e) => {
+    e.preventDefault();
+    axios
+      .post(
+        'http://15.165.91.27:8080/users/sign-up/email-authentication',
+        {
+          email: signup.email,
+        },
+        {
+          headers: { 'content-type': 'application/json' },
+        },
+      )
+      .then(() => alert('이메일이 전송되었습니다'))
+      .catch((err) => console.log(err));
+  };
+
+  // 이메일 인증 체크
+  const emailAuthCheckHandler = (e) => {
+    e.preventDefault();
+
+    axios
+      .get('http://15.165.91.27:8080/users/sign-up/email-authentication', {
+        params: {
+          email: signup.email,
+          authenticationNumber: signup.authenticationNumber,
+        },
+      })
+      .then((res) => alert(res.data.description))
+      .catch((err) => console.log(err));
+  };
+
+  // 회원가입 정보 보내기
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    // JSON 데이터를 문자열로 변환하여 멀티파트 폼 데이터에 추가
+    formData.append('image', signup.image); // 이미지 파일을 멀티파트 폼 데이터에 추가
+
+    // 회원 가입 정보를 객체로 만들어서 멀티파트 폼 데이터에 추가
+    const signUpData = {
+      image: '',
+      name: signup.name,
+      studentNumber: signup.studentNumber,
+      email: signup.email,
+      authenticationNumber: signup.authenticationNumber,
+      password: signup.password,
+      college: signup.college,
+      department: signup.department,
+    };
+
+    formData.append(
+      'request ',
+      new Blob([JSON.stringify(signUpData)], {
+        type: 'application/json',
+      }),
+    );
+
+    console.log(formData);
+
+    axios
+      .post('http://15.165.91.27:8080/users/sign-up', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((res) => alert(res.data.responseCode))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -259,7 +403,7 @@ function Signup() {
       <Explan>회원가입</Explan>
       <Ex>필수 정보를 입력해 회원가입을 완료할 수 있습니다.</Ex>
 
-      <Form>
+      <Form onSubmit={submitHandler}>
         <FileWrapper>
           <FileImg src={imgFile || UserIcon} alt="프로필 이미지" />
           <FileLabel htmlFor="profileImg">프로필 이미지 선택</FileLabel>
@@ -267,35 +411,73 @@ function Signup() {
         </FileWrapper>
 
         <FormWrapper>
-          <InputName type="text" placeholder="이름" />
+          <InputName
+            type="text"
+            placeholder="이름"
+            value={signup.name}
+            name="name"
+            onChange={inputHandler}
+          />
         </FormWrapper>
 
         <FormWrapper>
           <StudentNum>
-            <StuNumInput type="text" placeholder="학번" />
-            <StudentNumBtn type="button">중복 체크</StudentNumBtn>
+            <StuNumInput
+              type="text"
+              placeholder="학번"
+              value={signup.studentNumber}
+              name="studentNumber"
+              onChange={inputHandler}
+            />
+            <StudentNumBtn type="button" onClick={stuNumCheckHandler}>
+              중복 체크
+            </StudentNumBtn>
           </StudentNum>
         </FormWrapper>
 
         <FormWrapper>
           <EmailWrapper>
-            <InputText type="text" placeholder="이메일" />
+            <InputText
+              type="text"
+              placeholder="이메일"
+              value={signup.email}
+              name="email"
+              onChange={inputHandler}
+            />
             <Email>@sungkyul.ac.kr</Email>
-            <Button type="button">중복 체크</Button>
-            <Button type="button">인증코드 발송</Button>
+            <Button type="button" onClick={emailCheckHandler}>
+              중복 체크
+            </Button>
+            <Button type="button" onClick={sendEmailAuthHandler}>
+              인증코드 발송
+            </Button>
           </EmailWrapper>
         </FormWrapper>
 
         <FormWrapper>
           <AuthWrapper>
-            <InputText type="text" placeholder="인증 번호" />
-            <AuthBtn type="button">인증 확인</AuthBtn>
+            <InputText
+              type="text"
+              placeholder="인증 번호"
+              value={signup.authenticationNumber}
+              name="authenticationNumber"
+              onChange={inputHandler}
+            />
+            <AuthBtn type="button" onClick={emailAuthCheckHandler}>
+              인증 확인
+            </AuthBtn>
           </AuthWrapper>
         </FormWrapper>
 
         <FormWrapper>
           <PasswordWrapper>
-            <InputText type="password" placeholder="비밀번호" />
+            <InputText
+              type="password"
+              placeholder="비밀번호"
+              value={signup.password}
+              name="password"
+              onChange={inputHandler}
+            />
           </PasswordWrapper>
         </FormWrapper>
 
@@ -307,17 +489,14 @@ function Signup() {
             <option value="신학대학">신학대학</option>
             <option value="인문대학">인문대학</option>
             <option value="사회과학대학">사회과학대학</option>
-            <option>글로벌경영기술대학</option>
-            <option>사범대학</option>
-            <option>IT공과대학</option>
-            <option>예술대학</option>
-            <option>융합대학</option>
+            <option value="글로벌경영기술대학">글로벌경영기술대학</option>
+            <option value="사범대학">사범대학</option>
+            <option value="IT공과대학">IT공과대학</option>
+            <option value="예술대학">예술대학</option>
+            <option value="융합대학">융합대학</option>
           </SelectCustom>
 
-          <SelectCustom
-            value={selectedDepartment}
-            onChange={(e) => setSelectedDepartment(e.target.value)}
-          >
+          <SelectCustom value={selectedDepartment} onChange={changeDepartmentHandler}>
             {getDepartmentOptions().map((department) => (
               <option key={department} value={department}>
                 {department}
@@ -327,7 +506,7 @@ function Signup() {
         </SelectWrapper>
 
         <FormWrapper>
-          <SignupBtn type="button">회원가입</SignupBtn>
+          <SignupBtn type="submit">회원가입</SignupBtn>
         </FormWrapper>
       </Form>
     </SignupContainer>
