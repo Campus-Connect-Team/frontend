@@ -42,14 +42,10 @@ function LoginPage() {
             비밀번호를 분실했나요? <a href="#">비밀번호 찾기</a>
           </p>
 
- 
+          <NavBar />
     </Login>
 )
 }
-    <>
-      <NavBar />
-      <div>로그인페이지입니다.</div>
-    </>
 export default LoginPage;
 
 const Login = styled.div`
