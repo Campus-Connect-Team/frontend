@@ -5,10 +5,8 @@ import Footer from '../components/Footer.jsx';
 
 function LoginPage() {
   return (
-    <div>
-    <NavBar />
     <Login> 
-    
+        <NavBar />
 
     {/* Title Wrap*/}
     <div className = "titleWrap">
@@ -47,23 +45,23 @@ function LoginPage() {
             비밀번호를 분실했나요? <a href="#">비밀번호 찾기</a>
           </p>
 
-          </Login>
-    <Footer />
-    </div>
+          <Footer/>
+    </Login>
    
-  );
+  )
 }
 export default LoginPage;
 
  const Login = styled.div`
 
 {
-    position : fixed ;
+    position : absolute ;
+    top:0;
     bottom : 0;
     width: 100% ;
     max-width : 500px;
     padding: 20px;
-    left: 50%;
+    left:50%;
     transform : translate(-50%,0);
     background-color: #23abeb;
     overflow : hidden;
