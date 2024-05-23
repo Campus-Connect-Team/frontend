@@ -15,6 +15,7 @@ import UserWithdrawal from './pages/UserWithdrawal';
 import UserWithdrawalComplete from './pages/UserWithdrawalComplete';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import Test from './components/boardDetail/CommentList.jsx';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/editpasswordcomplete" element={<EditPasswordComplete />} />
         <Route path="/userwithdrawal" element={<UserWithdrawal />} />
         <Route path="/userwithdrawalcomplete" element={<UserWithdrawalComplete />} />
+
       </Routes>
     </BrowserRouter>
   );

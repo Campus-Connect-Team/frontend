@@ -142,5 +142,3 @@ input{
     font-size: 15px;
   }
   
-`
-
