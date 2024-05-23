@@ -9,7 +9,6 @@ const SellerWrapper = () => {
         <img src="/default.png" />
         <div>
           <div className="name">정보통신공학과 김00</div>
-          <div className="info">판매점수: 4.2/5(3)</div>
         </div>
       </div>
     </StyledWrapper>

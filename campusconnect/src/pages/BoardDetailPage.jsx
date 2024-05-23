@@ -3,9 +3,12 @@ import NavBar from '../components/NavBar.jsx';
 import Footer from '../components/Footer.jsx';
 import ProductionWrapper from '../components/boardDetail/ProductionWrapper.jsx';
 import SellerWrapper from '../components/boardDetail/SellerWrapper.jsx';
+import CommentList from '../components/boardDetail/CommentList.jsx';
+import { useState } from 'react';
 
 function BoardDetailPage() {
-  const status = "available" // available, finish
+  const [comments, setComments] = useState([]);
+  const status = 'available'; // available, finish
 
   return (
     <>
@@ -15,9 +18,10 @@ function BoardDetailPage() {
           상품 상세
         </div>
         <div className="detail-wrapper">
-          <ProductionWrapper status={status}/>
-          <SellerWrapper status={status}/>
+          <ProductionWrapper status={status} comments={comments}  />
+          <SellerWrapper status={status} />
         </div>
+        <CommentList comments={comments} setComments={setComments} />
       </StyledWrapper>
       <Footer />
     </>
@@ -28,7 +32,6 @@ export default BoardDetailPage;
 
 const StyledWrapper = styled.div`
   margin-top: 100px;
-  height: 100%;
 
   .title-wrapper {
     font-size: 32px;

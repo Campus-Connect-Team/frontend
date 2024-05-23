@@ -1,10 +1,15 @@
-import React from 'react'
 import NavBar from '../components/NavBar';
+import React from 'react'
 import styled from 'styled-components';
+import Footer from '../components/Footer.jsx';
 
 function LoginPage() {
   return (
+    <div>
+    <NavBar />
     <Login> 
+    
+
     {/* Title Wrap*/}
     <div className = "titleWrap">
         로그인
@@ -42,26 +47,23 @@ function LoginPage() {
             비밀번호를 분실했나요? <a href="#">비밀번호 찾기</a>
           </p>
 
- 
-    </Login>
-)
+          </Login>
+    <Footer />
+    </div>
+   
+  );
 }
-    <>
-      <NavBar />
-      <div>로그인페이지입니다.</div>
-    </>
 export default LoginPage;
 
-const Login = styled.div`
+ const Login = styled.div`
 
 {
-    position : absolute ;
-    top:0;
+    position : fixed ;
     bottom : 0;
     width: 100% ;
     max-width : 500px;
     padding: 20px;
-    left:50%;
+    left: 50%;
     transform : translate(-50%,0);
     background-color: #23abeb;
     overflow : hidden;
@@ -70,7 +72,7 @@ const Login = styled.div`
 }
 
 .titleWrap {
-    margin-top: 87px;
+    margin-top: 100px;
     text-align: center;
     font-size: 40px;
     font-weight: 700;
@@ -141,4 +143,5 @@ input{
     text-align: center;
     font-size: 15px;
   }
+  
 `

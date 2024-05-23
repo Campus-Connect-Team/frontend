@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Logo from '../assets/Logo.png';
+import { useNavigate } from 'react-router-dom';
 
 const NavigationBar = styled.div`
   width: 100%;
@@ -86,13 +87,14 @@ const StyledWrapper = styled.div`
       margin-right: 10px;
     }
   }
-  
-  .nav-logout{
+
+  .nav-logout {
     display: flex;
     justify-content: space-between;
     font-weight: bold;
-    
-    > img{
+    cursor: pointer;
+
+    > img {
       width: 20px;
       height: 20px;
     }
@@ -100,6 +102,13 @@ const StyledWrapper = styled.div`
 `;
 
 function NavBar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    navigate("/login")
+  }
+
   return (
     <NavigationBar>
       <ExplanContainer>
@@ -125,12 +134,14 @@ function NavBar() {
             <div className="name">정보통신공학과 <br /> 김00</div>
           </div>
         </div>
-        <div className="nav-logout">
-          <img src="/src/assets/Logo.png" />
-          <div>
-            <div>로그아웃</div>
-          </div>
-        </div>
+        {localStorage.getItem('accessToken') &&
+          <div className="nav-logout" onClick={handleLogout}>
+            <img src="/src/assets/Logo.png" />
+            <div>
+              <div>로그아웃</div>
+            </div>
+          </div>}
+
       </StyledWrapper>
     </NavigationBar>
   );
