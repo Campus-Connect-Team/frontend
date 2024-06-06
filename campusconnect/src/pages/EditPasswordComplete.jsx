@@ -1,8 +1,11 @@
 import NavBar from '../components/NavBar.jsx';
 import Footer from '../components/Footer.jsx';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 function EditPasswordComplete() {
+  const navigate = useNavigate();
+
   return (
     <>
       <NavBar />
@@ -13,7 +16,7 @@ function EditPasswordComplete() {
         <div className="sub-title">비밀번호가 변경되어 자동으로 로그아웃되었어요. <br />
           변경하신 비밀번호로 재로그인 부탁드려요
         </div>
-        <div className="my-page-btn">
+        <div className="my-page-btn" onClick={()=>navigate("/login")}>
           <div>로그인 페이지로 이동</div>
         </div>
       </StyledWrapper>
@@ -57,5 +60,6 @@ const StyledWrapper = styled.div`
     }
   }
 `;
+
 
 

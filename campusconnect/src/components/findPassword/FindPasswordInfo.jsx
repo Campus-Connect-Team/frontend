@@ -21,6 +21,7 @@ const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-right: 130px;
   
   .first-info{
     margin-bottom: 20px;

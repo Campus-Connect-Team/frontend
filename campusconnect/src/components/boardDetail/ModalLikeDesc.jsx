@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ModalLikeDesc = ({ setLikeModalOpen, isHeartActive, setIsHeartActive }) => {
+const ModalLikeDesc = ({ handleHeartClick,setLikeModalOpen, isHeartActive, setIsHeartActive }) => {
   const handleYes = () => {
     setIsHeartActive(!isHeartActive); // isHeartActive 상태 반전
+    handleHeartClick(); // 하트 클릭 핸들러 호출
     setLikeModalOpen(false); // 모달 닫기
   };
 

@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SellerWrapper = () => {
+const SellerWrapper = ({ boardData }) => {
+  console.log(boardData);
   return (
     <StyledWrapper>
       <div className="seller-title">판매자 정보</div>
       <div className="seller-info">
-        <img src="/default.png" />
+        <img src={boardData.image ? boardData.image : '/default.png'}/>
         <div>
-          <div className="name">정보통신공학과 김00</div>
+          <div className="name">{boardData.department} {boardData.name}</div>
         </div>
       </div>
     </StyledWrapper>
@@ -40,6 +41,7 @@ const StyledWrapper = styled.div`
     }
 
     > img {
+      border-radius: 100%;
       width: 45px;
       height: 45px;
       margin-right: 10px;

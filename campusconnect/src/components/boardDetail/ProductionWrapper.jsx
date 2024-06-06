@@ -1,59 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import Modal from '../Modal.jsx';
 import ModalChattingDesc from './ModalChattingDesc.jsx';
 import ModalLikeDesc from './ModalLikeDesc.jsx';
+import axios from 'axios';
 
-const ProductionWrapper = ({ status, comments }) => {
+const ProductionWrapper = ({ comments, boardData, commentCount }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isLikeModalOpen, setLikeModalOpen] = useState(false);
   const [isHeartActive, setIsHeartActive] = useState(false);
+  const [favoriteCount, setFavoriteCount] = useState(boardData.favoriteCount);
 
-  // 하트 버튼 클릭 핸들러
-  const toggleHeart = () => {
+  const handleHeartClick = async () => {
     setIsHeartActive(!isHeartActive);
+    const accessToken = localStorage.getItem('accessToken');
+    const url = `http://15.165.91.27:8080/boards/2/favorite/${isHeartActive ? 'cancel' : 'register'}`;
+    try {
+      await axios.patch(url, null, {
+        headers: {
+          Authorization: accessToken
+        }
+      });
+      setFavoriteCount(prev => isHeartActive ? prev - 1 : prev + 1);
+    } catch (error) {
+      console.error('Error updating favorite status:', error);
+    }
   };
+
 
   return (
     <StyledWrapper>
       <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
-        <SwiperSlide><img src="/free-1.jpeg" /></SwiperSlide>
-        <SwiperSlide><img src="/free-2.jpeg" /></SwiperSlide>
-        <SwiperSlide><img src="/free-3.jpeg" /></SwiperSlide>
+        {boardData.boardImages.map((item) => (
+          <SwiperSlide key={item}><img src={item} alt="boardImage" /></SwiperSlide>
+        ))}
       </Swiper>
       <div className="production-info">
-        <div className="production-title">에어팟 프로2 판매해요~</div>
+        <div className="production-title">{boardData.title}</div>
         <div className="production-info-box">
           <div className="like-chat-wrapper">
-            <div className="like">관심 12</div>
+            <div className="like">관심 {favoriteCount}</div>
             <div className="chat">댓글 {comments.length}</div>
           </div>
           <div className="btn-wrapper">
-            <div className="heart-btn"
-                 style={{ backgroundColor: status === 'available' ? 'rgb(226 117 194)' : '#dedede' }}
-                 onClick={() => {
-                   setLikeModalOpen(true);
-                   // toggleHeart(); // 하트 버튼 클릭 시 toggleHeart 함수를 호출합니다.
-                 }}>
-              <img src={isHeartActive ? '/heart-active.png' : '/heart.png'} /> {/* 이미지 경로를 동적으로 변경 */}
+            <div
+              className="heart-btn"
+              style={{ backgroundColor: boardData.tradeStatus === '거래 가능' ? 'rgb(226 117 194)' : '#dedede' }}
+              onClick={() => {
+                // handleHeartClick();
+                setLikeModalOpen(true);
+              }}
+            >
+              <img src={isHeartActive ? '/heart-active.png' : '/heart.png'} alt="heart" />
             </div>
-            <div className="production-status"
-                 style={{ backgroundColor: status === 'available' ? '#007aff' : 'orange' }}>
-              {status === 'available' ? '거래 가능' : '거래 완료'}
+            <div
+              className="production-status"
+              style={{ backgroundColor: boardData.tradeStatus === '거래 가능' ? '#007aff' : 'orange' }}
+            >
+              {boardData.tradeStatus}
             </div>
           </div>
         </div>
-        <div className="production-desc">구입하고 10번도 사용 안한 것 같아요.. 거의 새 제품인데 사용한 일이 더 이상 없어서 판매하려고 해요 채팅주세요!!</div>
+        <div className="production-desc">{boardData.content}</div>
         <div className="kakao-id">카카오톡 아이디: wonjun1234</div>
       </div>
       <Modal isOpen={isModalOpen} close={() => setModalOpen(false)}>
         <ModalChattingDesc setModalOpen={setModalOpen} />
       </Modal>
       <Modal isOpen={isLikeModalOpen} close={() => setLikeModalOpen(false)}>
-        <ModalLikeDesc setLikeModalOpen={setLikeModalOpen} isHeartActive={isHeartActive}
-                       setIsHeartActive={setIsHeartActive} />
+        <ModalLikeDesc
+          handleHeartClick={handleHeartClick}
+          setLikeModalOpen={setLikeModalOpen}
+          isHeartActive={isHeartActive}
+          setIsHeartActive={setIsHeartActive}
+        />
       </Modal>
     </StyledWrapper>
   );
@@ -104,8 +126,8 @@ const StyledWrapper = styled.div`
         align-items: center;
         border-radius: 8px;
         margin-right: 10px;
-        
-        >img{
+
+        > img {
           width: 20px;
           height: 20px;
         }
@@ -156,7 +178,6 @@ const StyledWrapper = styled.div`
       display: flex;
       justify-content: space-between;
       margin-top: 30px;
-
 
       .chat-btn {
         background-color: #909090;

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Logo from '../assets/Logo.png';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const NavigationBar = styled.div`
   width: 100%;
@@ -64,6 +65,7 @@ const Authentication = styled.a`
 
 const StyledWrapper = styled.div`
   margin-right: 30px;
+  width: 170px;
 
   .nav-seller-info {
     display: flex;
@@ -73,7 +75,7 @@ const StyledWrapper = styled.div`
     .name {
       margin-bottom: 3px;
       text-align: end;
-
+      cursor: pointer;
     }
 
     .info {
@@ -103,11 +105,26 @@ const StyledWrapper = styled.div`
 
 function NavBar() {
   const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [department, setDepartment] = useState('');
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    navigate("/login")
-  }
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('studentNumber');
+    localStorage.removeItem('department');
+    localStorage.removeItem('name');
+    localStorage.removeItem('userProfileImage');
+    navigate('/login');
+  };
+
+  useEffect(() => {
+    const localStorageName = localStorage.getItem('name') || '김OO';
+    const localStorageDepartment = localStorage.getItem('department') || '정보통신공학과';
+
+    setName(localStorageName);
+    setDepartment(localStorageDepartment);
+  }, []);
+
 
   return (
     <NavigationBar>
@@ -121,28 +138,33 @@ function NavBar() {
       <div>
         <Category>서비스 이용 안내</Category>
         <Category>전체 공지사항</Category>
-        <Category>거래 게시판</Category>
+        <Category onClick={() => navigate('/board')}>거래 게시판</Category>
       </div>
       {/*<div>*/}
       {/*  <Authentication>로그인</Authentication>*/}
       {/*  <Authentication>회원가입</Authentication>*/}
       {/*</div>*/}
       <StyledWrapper>
-        <div className="nav-seller-info">
-          <img src="/default.png" />
-          <div>
-            <div className="name">정보통신공학과 <br /> 김00</div>
-          </div>
-        </div>
         {localStorage.getItem('accessToken') &&
-          <div className="nav-logout" onClick={handleLogout}>
-            <img src="/src/assets/Logo.png" />
-            <div>
-              <div>로그아웃</div>
+          <>
+            <div className="nav-seller-info">
+              <img src="/default.png" />
+              <div>
+                <div className="name" onClick={() => navigate('/mypage')}>{department} <br /> {name}</div>
+              </div>
             </div>
-          </div>}
+
+            <div className="nav-logout" onClick={handleLogout}>
+              <img src="/src/assets/Logo.png" />
+              <div>
+                <div>로그아웃</div>
+              </div>
+            </div>
+          </>
+        }
 
       </StyledWrapper>
+
     </NavigationBar>
   );
 }
