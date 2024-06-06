@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 const Reply = ({ reply, updateReply, deleteReply, commentId }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [text, setText] = useState(reply.text);
+  const [text, setText] = useState(reply.replyContent);
   const maxLength = 100;
 
   const handleEdit = () => {
@@ -12,24 +12,38 @@ const Reply = ({ reply, updateReply, deleteReply, commentId }) => {
   };
 
   const handleUpdate = () => {
-    updateReply(commentId, reply.id, text);
+    updateReply(commentId, reply.replyId, text);
     setIsEditing(false);
   };
 
   const handleDelete = () => {
-    deleteReply(commentId, reply.id);
+    deleteReply(commentId, reply.replyId);
   };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
+  console.log(reply);
 
   return (
     <ReplyContainer>
       <ReplyHeader>
         <ReplyAuthor>
           <img src="/default.png" alt="profile" />
-          <div className="class">국어국문학과</div>
-          <div>김 00</div>
+          <div className="class">{reply.replierDepartment}</div>
+          <div>{reply.replierName}</div>
         </ReplyAuthor>
         <ReplyInfo>
-          {reply.date}
+          {formatDate(reply.createdAt ? reply.createdAt : reply.modifiedAt)}
           <ReplyActions>
             <div className="edit-btn" onClick={handleEdit}>수정</div>
             <div className="delete-btn" onClick={handleDelete}>삭제</div>
@@ -47,7 +61,7 @@ const Reply = ({ reply, updateReply, deleteReply, commentId }) => {
           <Button onClick={handleUpdate}>수정</Button>
         </EditTextAreaWrapper>
       ) : (
-        <ReplyContent>{reply.text}</ReplyContent>
+        <ReplyContent>{reply.replyContent}</ReplyContent>
       )}
 
     </ReplyContainer>

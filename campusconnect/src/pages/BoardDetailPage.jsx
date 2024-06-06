@@ -4,11 +4,35 @@ import Footer from '../components/Footer.jsx';
 import ProductionWrapper from '../components/boardDetail/ProductionWrapper.jsx';
 import SellerWrapper from '../components/boardDetail/SellerWrapper.jsx';
 import CommentList from '../components/boardDetail/CommentList.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function BoardDetailPage() {
   const [comments, setComments] = useState([]);
-  const status = 'available'; // available, finish
+  const [boardData, setBoardData] = useState();
+  const [commentCount, setCommentCount] = useState();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    axios.get('http://15.165.91.27:8080/boards/2', {
+      headers: {
+        Authorization: accessToken
+      }
+    })
+      .then(response => {
+        setBoardData(response.data);
+        setCommentCount(response.data.commentCount);
+        setComments(response.data.boardCommentDetailResponses);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the board data!', error);
+      });
+  }, []);
+
+  if (!boardData) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <>
@@ -18,8 +42,8 @@ function BoardDetailPage() {
           상품 상세
         </div>
         <div className="detail-wrapper">
-          <ProductionWrapper status={status} comments={comments}  />
-          <SellerWrapper status={status} />
+          <ProductionWrapper comments={comments} boardData={boardData} commentCount={commentCount} />
+          <SellerWrapper boardData={boardData} />
         </div>
         <CommentList comments={comments} setComments={setComments} />
       </StyledWrapper>

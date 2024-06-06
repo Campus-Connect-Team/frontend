@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Comment from './Comment.jsx';
+import axios from 'axios';
 
 const AppContainer = styled.div`
   max-width: 800px;
@@ -22,60 +23,103 @@ const CommentsList = styled.div`
 
 const CommentList = ({ comments, setComments }) => {
 
-  const addComment = (text) => {
-    setComments([...comments, { id: Date.now(), text, replies: [], date: new Date().toLocaleString() }]);
+
+  const addComment = async (text) => {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await axios.post(`http://15.165.91.27:8080/boards/2/comments`, { commentContent: text }, {
+      headers: {
+        Authorization: accessToken
+      }
+    });
+    setComments([...comments, response.data]);
   };
 
-  const updateComment = (id, newText) => {
+  const updateComment = async (id, newText) => {
+    console.log(id);
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await axios.patch(`http://15.165.91.27:8080/boards/2/comments/${id}`, { commentUpdateContent: newText }, {
+      headers: {
+        Authorization: accessToken
+      }
+    });
+
     setComments(comments.map(comment =>
-      comment.id === id ? { ...comment, text: newText } : comment
+      comment.commentId === id ? { ...comment, commentContent: newText } : comment
     ));
   };
 
-  const deleteComment = (id) => {
-    setComments(comments.filter(comment => comment.id !== id));
+  const deleteComment = async (id) => {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await axios.delete(`http://15.165.91.27:8080/boards/2/comments/${id}`, {
+      headers: {
+        Authorization: accessToken
+      }
+    });
+    setComments(comments.filter(comment => comment.commentId !== id));
   };
 
-  const addReply = (commentId, replyText) => {
+  const addReply = async (commentId, replyText) => {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await axios.post(`http://15.165.91.27:8080/boards/2/comments/${commentId}/replies`, { replyContent: replyText }, {
+      headers: {
+        Authorization: accessToken
+      }
+    });
+
     setComments(comments.map(comment =>
-      comment.id === commentId
+      comment.commentId === commentId
         ? {
           ...comment,
-          replies: [...comment.replies, { id: Date.now(), text: replyText, date: new Date().toLocaleString() }]
+          boardReplyDetailResponses : [...(comment.boardReplyDetailResponses || []), response.data]
         }
         : comment
     ));
   };
 
-  const updateReply = (commentId, replyId, newText) => {
+  const updateReply = async (commentId, replyId, newText) => {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await axios.patch(`http://15.165.91.27:8080/boards/2/comments/${commentId}/replies/${replyId}`, { replyUpdateContent: newText }, {
+      headers: {
+        Authorization: accessToken
+      }
+    });
+
     setComments(comments.map(comment =>
-      comment.id === commentId
+      comment.commentId === commentId
         ? {
           ...comment,
-          replies: comment.replies.map(reply =>
-            reply.id === replyId ? { ...reply, text: newText } : reply
+          boardReplyDetailResponses: comment.boardReplyDetailResponses.map(reply =>
+            reply.replyId === replyId ? { ...reply, replyContent: newText } : reply
           )
         }
         : comment
     ));
   };
 
-  const deleteReply = (commentId, replyId) => {
+  const deleteReply = async (commentId, replyId) => {
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await axios.delete(`http://15.165.91.27:8080/boards/2/comments/${commentId}/replies/${replyId}`, {
+      headers: {
+        Authorization: accessToken
+      }
+    });
+
     setComments(comments.map(comment =>
-      comment.id === commentId
-        ? { ...comment, replies: comment.replies.filter(reply => reply.id !== replyId) }
+      comment.commentId === commentId
+        ? { ...comment, boardReplyDetailResponses: comment.boardReplyDetailResponses.filter(reply => reply.replyId !== replyId) }
         : comment
     ));
   };
 
+
   return (
     <AppContainer>
-      <Header>댓글 {comments.length}</Header>
+      <Header>댓글 {comments?.length}</Header>
       <CommentForm onSubmit={addComment} />
       <CommentsList>
-        {comments.map(comment => (
+        {comments?.map(comment => (
           <Comment
-            key={comment.id}
+            key={comment.commentId}
             comment={comment}
             updateComment={updateComment}
             deleteComment={deleteComment}

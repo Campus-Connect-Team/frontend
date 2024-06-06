@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const EditPasswordForm = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const EditPasswordForm = () => {
   const handleCurrentPasswordChange = (event) => {
     const value = event.target.value;
     setCurrentPassword(value);
-    setIsCurrentPasswordValid(value === '1111aaaa!');
+    // setIsCurrentPasswordValid(value === '1111aaaa!');
   };
 
   const handleNewPasswordChange = (event) => {
@@ -34,11 +35,36 @@ const EditPasswordForm = () => {
     setIsConfirmPasswordValid(value === newPassword);
   };
 
-  const handleSubmit = () => {
-    if (isCurrentPasswordValid && isConfirmPasswordValid) {
-      navigate('/editpasswordcomplete');
-    } else {
-      alert('입력 오류가 있습니다. 다시 확인해주세요.');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const studentNumber = localStorage.getItem('studentNumber');
+    const accessToken = localStorage.getItem('accessToken');
+
+    try {
+      const response = await axios.patch(
+        `http://15.165.91.27:8080/users/my-page/password/${String(studentNumber)}`,
+        {
+          currentPassword,
+          editPassword: newPassword,
+          checkEditPassword: confirmPassword,
+        },
+        {
+          headers: {
+            Authorization: accessToken,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('studentNumber');
+        localStorage.removeItem('department');
+        localStorage.removeItem('name');
+        localStorage.removeItem('userProfileImage');
+        navigate('/EditPasswordComplete');
+      }
+    } catch (error) {
+      alert(error.response.data.responseCode);
     }
   };
 
@@ -54,11 +80,11 @@ const EditPasswordForm = () => {
             onChange={handleCurrentPasswordChange}
           />
         </div>
-        {currentPassword && (isCurrentPasswordValid ? (
-          <div className="collect">현재 비밀번호와 일치합니다.</div>
-        ) : (
-          <div className="waring">현재 비밀번호가 일치하지 않습니다.</div>
-        ))}
+        {/*{currentPassword && (isCurrentPasswordValid ? (*/}
+        {/*  <div className="collect">현재 비밀번호와 일치합니다.</div>*/}
+        {/*) : (*/}
+        {/*  <div className="waring">현재 비밀번호가 일치하지 않습니다.</div>*/}
+        {/*))}*/}
         <div className="input-wrapper">
           <div className="label">변경할 비밀번호</div>
           <input

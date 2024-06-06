@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import ComplateBtn from './CompleteBtn';
 import Airpods from '../../assets/sample/Airpods.png';
 import PossibleBtn from './PossibleBtn';
+import { useNavigate } from 'react-router-dom';
 
 const GridContainer = styled.div`
   width: 70%;
@@ -18,6 +19,7 @@ const GridItems = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 `;
 
 const MainImg = styled.img`
@@ -66,7 +68,7 @@ const BoardData = {
       name: '김OO',
       like: 12,
       chat: 3,
-      sell: false,
+      sell: false
     },
     {
       title: '컴퓨터 구조',
@@ -75,7 +77,7 @@ const BoardData = {
       name: '이OO',
       like: 1,
       chat: 0,
-      sell: true,
+      sell: true
     },
     {
       title: '자전거',
@@ -84,7 +86,7 @@ const BoardData = {
       name: '김OO',
       like: 2,
       chat: 5,
-      sell: true,
+      sell: true
     },
     {
       title: '아이패드',
@@ -93,7 +95,7 @@ const BoardData = {
       name: '강OO',
       like: 5,
       chat: 8,
-      sell: true,
+      sell: true
     },
     {
       title: '모든 전공책(1~4학년)',
@@ -102,7 +104,7 @@ const BoardData = {
       name: '김OO',
       like: 12,
       chat: 3,
-      sell: true,
+      sell: true
     },
     {
       title: '에어팟 프로2 판매해요~',
@@ -111,7 +113,7 @@ const BoardData = {
       name: '김OO',
       like: 12,
       chat: 3,
-      sell: false,
+      sell: false
     },
     {
       title: '컴퓨터 구조',
@@ -120,7 +122,7 @@ const BoardData = {
       name: '이OO',
       like: 1,
       chat: 0,
-      sell: true,
+      sell: true
     },
     {
       title: '자전거',
@@ -129,7 +131,7 @@ const BoardData = {
       name: '김OO',
       like: 2,
       chat: 5,
-      sell: true,
+      sell: true
     },
     {
       title: '아이패드',
@@ -138,7 +140,7 @@ const BoardData = {
       name: '강OO',
       like: 5,
       chat: 8,
-      sell: true,
+      sell: true
     },
     {
       title: '모든 전공책(1~4학년)',
@@ -147,7 +149,7 @@ const BoardData = {
       name: '김OO',
       like: 12,
       chat: 3,
-      sell: true,
+      sell: true
     },
     {
       title: '에어팟 프로2 판매해요~',
@@ -156,7 +158,7 @@ const BoardData = {
       name: '김OO',
       like: 12,
       chat: 3,
-      sell: false,
+      sell: false
     },
     {
       title: '컴퓨터 구조',
@@ -165,7 +167,7 @@ const BoardData = {
       name: '이OO',
       like: 1,
       chat: 0,
-      sell: true,
+      sell: true
     },
     {
       title: '자전거',
@@ -174,7 +176,7 @@ const BoardData = {
       name: '김OO',
       like: 2,
       chat: 5,
-      sell: true,
+      sell: true
     },
     {
       title: '아이패드',
@@ -183,7 +185,7 @@ const BoardData = {
       name: '강OO',
       like: 5,
       chat: 8,
-      sell: true,
+      sell: true
     },
     {
       title: '모든 전공책(1~4학년)',
@@ -192,16 +194,17 @@ const BoardData = {
       name: '김OO',
       like: 12,
       chat: 3,
-      sell: true,
-    },
-  ],
+      sell: true
+    }
+  ]
 };
 
 function BoardList() {
+  const navigate = useNavigate();
   return (
     <GridContainer>
       {BoardData.Board.map((board, index) => (
-        <GridItems key={index}>
+        <GridItems key={index} onClick={() => navigate('/boardDetail/2')}>
           <MainImg src={board.mainImg} alt="에어팟" />
           <MainContent>{board.title}</MainContent>
           <UserContainer>

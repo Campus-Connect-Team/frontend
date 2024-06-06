@@ -21,6 +21,10 @@ function LoginPage() {
 
       if (response.status === 200) {
         localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('studentNumber', response.data.studentNumber);
+        localStorage.setItem('department', response.data.department);
+        localStorage.setItem('name', response.data.name);
+        localStorage.setItem('userProfileImage', response.data.userProfileImage);
         navigate('/board');
       }
     } catch (error) {

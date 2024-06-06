@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Reply from './Reply.jsx';
+import axios from 'axios';
 
 const Comment = ({ comment, updateComment, deleteComment, addReply, updateReply, deleteReply }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [text, setText] = useState(comment.text);
+  const [text, setText] = useState(comment.commentContent);
   const [replyText, setReplyText] = useState('');
   const [showReplyForm, setShowReplyForm] = useState(false);
   const maxLength = 100;
@@ -14,18 +15,18 @@ const Comment = ({ comment, updateComment, deleteComment, addReply, updateReply,
   };
 
   const handleUpdate = () => {
-    updateComment(comment.id, text);
+    updateComment(comment.commentId, text);
     setIsEditing(false);
   };
 
   const handleDelete = () => {
-    deleteComment(comment.id);
+    deleteComment(comment.commentId);
   };
 
-  const handleReplySubmit = (e) => {
+  const handleReplySubmit = async (e) => {
     e.preventDefault();
     if (replyText.trim()) {
-      addReply(comment.id, replyText);
+      addReply(comment.commentId, replyText);
       setReplyText('');
     }
   };
@@ -34,16 +35,29 @@ const Comment = ({ comment, updateComment, deleteComment, addReply, updateReply,
     setShowReplyForm(!showReplyForm);
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
+
   return (
     <CommentContainer>
       <CommentHeader>
         <CommentAuthor>
           <img src="/default.png" alt="profile" />
-          <div className="class">국어국문학과</div>
-          <div>김 00</div>
+          <div className="class">{comment.commenterDepartment}</div>
+          <div>{comment.commenterName}</div>
         </CommentAuthor>
         <CommentInfo>
-          {comment.date}
+          {formatDate(comment.createdAt ? comment.createdAt : comment.modifiedAt)}
           <CommentActions>
             <div className="edit-btn" onClick={handleEdit}>수정</div>
             <div className="delete-btn" onClick={handleDelete}>삭제</div>
@@ -62,20 +76,21 @@ const Comment = ({ comment, updateComment, deleteComment, addReply, updateReply,
         </EditTextAreaWrapper>
       ) : (
         <CommentContent>
-          {comment.text}
-          <div className="reply-toggle" onClick={toggleReplyForm}>답글달기 <span>({comment.replies.length})</span></div>
+          {comment.commentContent}
+          <div className="reply-toggle"
+               onClick={toggleReplyForm}>답글달기 <span>({comment?.boardReplyDetailResponses?.length || 0})</span></div>
         </CommentContent>
       )}
       {showReplyForm && (
         <>
           <RepliesList>
-            {comment.replies.map(reply => (
+            {comment?.boardReplyDetailResponses?.map(reply => (
               <Reply
                 key={reply.id}
                 reply={reply}
                 updateReply={updateReply}
                 deleteReply={deleteReply}
-                commentId={comment.id}
+                commentId={comment.commentId}
               />
             ))}
           </RepliesList>
@@ -151,8 +166,8 @@ const CommentContent = styled.div`
     cursor: pointer;
     font-size: 14px;
     margin-top: 15px;
-    
-    span{
+
+    span {
       color: red;
     }
   }
